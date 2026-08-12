@@ -5,8 +5,16 @@ import * as THREE from "three";
 function cssColor(name: string, fallback: string) {
   if (typeof window === "undefined") return new THREE.Color(fallback);
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  if (!value) return new THREE.Color(fallback);
+  // Resolve modern color spaces (oklch) to rgb() the renderer understands.
+  const probe = document.createElement("span");
+  probe.style.display = "none";
+  probe.style.color = value;
+  document.body.appendChild(probe);
+  const resolved = getComputedStyle(probe).color;
+  probe.remove();
   try {
-    return new THREE.Color(value || fallback);
+    return new THREE.Color(resolved || fallback);
   } catch {
     return new THREE.Color(fallback);
   }
