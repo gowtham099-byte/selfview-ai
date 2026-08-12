@@ -59,10 +59,10 @@ function Shape({ def, color }: { def: ShapeDef; color: THREE.Color }) {
     <mesh ref={ref} position={def.position} rotation={def.rotation} scale={def.scale} geometry={geometry}>
       <meshStandardMaterial
         color={color}
-        roughness={0.35}
-        metalness={0.25}
+        roughness={0.45}
+        metalness={0.05}
         transparent
-        opacity={0.55}
+        opacity={0.9}
         flatShading
       />
     </mesh>
@@ -112,9 +112,9 @@ export default function Scene3D() {
       camera={{ position: [0, 0, 10], fov: 50 }}
       style={{ pointerEvents: "none" }}
     >
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[6, 8, 6]} intensity={1.1} />
-      <pointLight position={[-8, -4, 4]} intensity={30} color={colors.accent} distance={30} />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[6, 8, 6]} intensity={0.9} />
+      <pointLight position={[-8, -4, 4]} intensity={20} color={colors.accent} distance={30} />
       {shapes.map((def, index) => (
         <Shape key={index} def={def} color={index % 3 === 0 ? colors.accent : colors.primary} />
       ))}
