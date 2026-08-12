@@ -1,25 +1,10 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-function cssColor(name: string, fallback: string) {
-  if (typeof window === "undefined") return new THREE.Color(fallback);
-  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  if (!value) return new THREE.Color(fallback);
-  try {
-    // Rasterise the token (oklch etc.) to sRGB via a 1x1 canvas.
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = 1;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return new THREE.Color(fallback);
-    ctx.fillStyle = value;
-    ctx.fillRect(0, 0, 1, 1);
-    const data = ctx.getImageData(0, 0, 1, 1).data;
-    return new THREE.Color((data[0] ?? 0) / 255, (data[1] ?? 0) / 255, (data[2] ?? 0) / 255);
-  } catch {
-    return new THREE.Color(fallback);
-  }
-}
+// Design-token colours resolved to sRGB hex (oklch is not parseable by three).
+const PRIMARY = "#2f6b62";
+const ACCENT = "#e0a15c";
 
 type ShapeDef = {
   position: [number, number, number];
@@ -63,7 +48,7 @@ function Shape({ def, color }: { def: ShapeDef; color: THREE.Color }) {
         roughness={0.45}
         metalness={0.05}
         transparent
-        opacity={0.9}
+        opacity={0.75}
         flatShading
       />
     </mesh>
@@ -80,17 +65,10 @@ function Rig() {
 }
 
 export default function Scene3D() {
-  const [colors, setColors] = useState(() => ({
-    primary: new THREE.Color("#2c6b63"),
-    accent: new THREE.Color("#d59a52"),
-  }));
-
-  useEffect(() => {
-    setColors({
-      primary: cssColor("--primary", "#2c6b63"),
-      accent: cssColor("--accent", "#d59a52"),
-    });
-  }, []);
+  const colors = useMemo(
+    () => ({ primary: new THREE.Color(PRIMARY), accent: new THREE.Color(ACCENT) }),
+    [],
+  );
 
   const shapes = useMemo<ShapeDef[]>(() => {
     const list: ShapeDef[] = [];
