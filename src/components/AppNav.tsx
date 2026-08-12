@@ -24,7 +24,7 @@ export function AppNav() {
   }
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
+    <header className="glass-3d sticky top-0 z-30 border-b border-border">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-4">
         <Link to="/dashboard" className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
