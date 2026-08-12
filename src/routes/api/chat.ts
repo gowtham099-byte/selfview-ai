@@ -70,7 +70,7 @@ export const Route = createFileRoute("/api/chat")({
         const result = streamText({
           model: gateway(AI_MODEL),
           system: buildInterviewSystemPrompt(session, profile ?? null),
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
           onFinish: async ({ text }) => {
             if (!text.trim()) return;
             await supabase.from("session_messages").insert({
