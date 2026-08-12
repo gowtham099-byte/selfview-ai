@@ -14,8 +14,8 @@ function cssColor(name: string, fallback: string) {
     if (!ctx) return new THREE.Color(fallback);
     ctx.fillStyle = value;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-    return new THREE.Color(r / 255, g / 255, b / 255);
+    const data = ctx.getImageData(0, 0, 1, 1).data;
+    return new THREE.Color((data[0] ?? 0) / 255, (data[1] ?? 0) / 255, (data[2] ?? 0) / 255);
   } catch {
     return new THREE.Color(fallback);
   }
