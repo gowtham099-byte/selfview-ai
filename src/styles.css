@@ -135,8 +135,12 @@
     border-color: var(--color-border);
   }
 
-  body {
+  html {
     background-color: var(--color-background);
+  }
+
+  body {
+    background-color: transparent;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
