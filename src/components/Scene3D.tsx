@@ -6,15 +6,16 @@ function cssColor(name: string, fallback: string) {
   if (typeof window === "undefined") return new THREE.Color(fallback);
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   if (!value) return new THREE.Color(fallback);
-  // Resolve modern color spaces (oklch) to rgb() the renderer understands.
-  const probe = document.createElement("span");
-  probe.style.display = "none";
-  probe.style.color = value;
-  document.body.appendChild(probe);
-  const resolved = getComputedStyle(probe).color;
-  probe.remove();
   try {
-    return new THREE.Color(resolved || fallback);
+    // Rasterise the token (oklch etc.) to sRGB via a 1x1 canvas.
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return new THREE.Color(fallback);
+    ctx.fillStyle = value;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return new THREE.Color(r / 255, g / 255, b / 255);
   } catch {
     return new THREE.Color(fallback);
   }
