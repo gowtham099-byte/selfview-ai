@@ -48,7 +48,7 @@ function Shape({ def, color }: { def: ShapeDef; color: string }) {
         roughness={0.45}
         metalness={0.05}
         transparent
-        opacity={0.85}
+        opacity={0.7}
         emissive={color}
         emissiveIntensity={0.35}
         flatShading
@@ -72,9 +72,9 @@ export default function Scene3D() {
     const list: ShapeDef[] = [];
     for (let i = 0; i < 9; i++) {
       list.push({
-        position: [(i % 3) * 5 - 5 + (i % 2) * 1.5, Math.sin(i * 2.1) * 3, -2 - (i % 4) * 2.5],
+        position: [(i % 3) * 5 - 5 + (i % 2) * 1.5, Math.sin(i * 2.1) * 3, -6 - (i % 4) * 2.5],
         rotation: [i * 0.6, i * 0.9, 0],
-        scale: 0.6 + ((i * 7) % 5) * 0.18,
+        scale: 0.45 + ((i * 7) % 5) * 0.14,
         speed: 0.15 + (i % 4) * 0.06,
         kind: i % 4,
       });
