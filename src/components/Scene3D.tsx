@@ -48,7 +48,9 @@ function Shape({ def, color }: { def: ShapeDef; color: THREE.Color }) {
         roughness={0.45}
         metalness={0.05}
         transparent
-        opacity={0.75}
+        opacity={0.85}
+        emissive={color}
+        emissiveIntensity={0.35}
         flatShading
       />
     </mesh>
@@ -86,6 +88,7 @@ export default function Scene3D() {
 
   return (
     <Canvas
+      flat
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true }}
       camera={{ position: [0, 0, 10], fov: 50 }}
