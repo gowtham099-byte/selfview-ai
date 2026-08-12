@@ -14,7 +14,7 @@ type ShapeDef = {
   kind: number;
 };
 
-function Shape({ def, color }: { def: ShapeDef; color: THREE.Color }) {
+function Shape({ def, color }: { def: ShapeDef; color: string }) {
   const ref = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -67,10 +67,6 @@ function Rig() {
 }
 
 export default function Scene3D() {
-  const colors = useMemo(
-    () => ({ primary: new THREE.Color(PRIMARY), accent: new THREE.Color(ACCENT) }),
-    [],
-  );
 
   const shapes = useMemo<ShapeDef[]>(() => {
     const list: ShapeDef[] = [];
@@ -96,9 +92,9 @@ export default function Scene3D() {
     >
       <ambientLight intensity={0.35} />
       <directionalLight position={[6, 8, 6]} intensity={0.9} />
-      <pointLight position={[-8, -4, 4]} intensity={20} color={colors.accent} distance={30} />
+      <pointLight position={[-8, -4, 4]} intensity={20} color={ACCENT} distance={30} />
       {shapes.map((def, index) => (
-        <Shape key={index} def={def} color={index % 3 === 0 ? colors.accent : colors.primary} />
+        <Shape key={index} def={def} color={index % 3 === 0 ? ACCENT : PRIMARY} />
       ))}
       <Rig />
     </Canvas>
