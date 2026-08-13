@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { AppNav } from "@/components/AppNav";
+import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -84,20 +84,16 @@ function Dashboard() {
   const sessions = sessionsQuery.data ?? [];
 
   return (
-    <div className="min-h-screen">
-      <AppNav />
-      <main className="mx-auto w-full max-w-6xl px-4 py-10">
-        <h1 className="text-4xl">
-          {profileQuery.data?.full_name
-            ? `Ready when you are, ${profileQuery.data.full_name.split(" ")[0]}`
-            : "Ready when you are"}
-        </h1>
-        <p className="mt-2 max-w-xl text-muted-foreground">
-          Pick a role and round type. The panel adapts its questions, probes your answers and scores
-          you at the end.
-        </p>
+    <AppShell
+      title={
+        profileQuery.data?.full_name
+          ? `Ready when you are, ${profileQuery.data.full_name.split(" ")[0]}`
+          : "Ready when you are"
+      }
+      subtitle="Pick a role and round type. The panel adapts its questions, probes your answers and scores you at the end."
+    >
+      <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[380px_1fr]">
           <Card className="h-fit shadow-paper">
             <CardHeader>
               <CardTitle className="text-2xl">New mock interview</CardTitle>
@@ -229,8 +225,8 @@ function Dashboard() {
               ))}
             </div>
           </section>
-        </div>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
+
 }

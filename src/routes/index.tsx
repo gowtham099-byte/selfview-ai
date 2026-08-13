@@ -54,54 +54,90 @@ function Landing() {
   }, [navigate]);
 
   return (
-    <div className="paper-grid min-h-screen">
-      <header className="mx-auto flex h-16 w-full max-w-6xl items-center px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <GraduationCap className="size-4" />
-          </span>
-          <span className="font-display text-xl">Panelly</span>
-        </Link>
-        <Button asChild variant="ghost" size="sm" className="ml-auto">
-          <Link to="/auth">Sign in</Link>
-        </Button>
-      </header>
+    <div className="min-h-screen p-0 lg:p-6">
+      <div className="paper-grid min-h-screen overflow-hidden border-border bg-background lg:min-h-[calc(100vh-3rem)] lg:rounded-3xl lg:border lg:shadow-lift">
+        <header className="mx-auto flex h-20 w-full max-w-6xl items-center px-6">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-accent text-accent-foreground shadow-brass">
+              <GraduationCap className="size-5" />
+            </span>
+            <span className="font-display text-2xl font-bold tracking-tight uppercase">
+              Panelly
+            </span>
+          </Link>
+          <Button asChild variant="ghost" size="sm" className="ml-auto">
+            <Link to="/auth">Sign in</Link>
+          </Button>
+        </header>
 
-      <main className="mx-auto w-full max-w-6xl px-4">
-        <section className="py-20 sm:py-28">
-          <p className="text-sm tracking-[0.2em] text-muted-foreground uppercase">
-            Interview preparation
-          </p>
-          <h1 className="mt-4 max-w-3xl text-5xl leading-[1.05] sm:text-7xl">
-            Sit the interview before the interview.
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            Panelly runs realistic AI mock interviews for any role or exam, follows up on your
-            answers, and tells you exactly where you lost marks.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <Link to="/auth">Start a mock interview</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/auth">Browse the question bank</Link>
-            </Button>
-          </div>
-        </section>
-
-        <section className="grid gap-6 pb-24 md:grid-cols-3">
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="rounded-xl border border-border bg-card p-6 shadow-paper"
-            >
-              <feature.icon className="size-6 text-accent-foreground" />
-              <h2 className="mt-4 text-2xl">{feature.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{feature.body}</p>
+        <main className="mx-auto w-full max-w-6xl px-6 pb-16">
+          <section className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 sm:p-14">
+            <div className="relative z-10 max-w-2xl">
+              <span className="font-display text-xs font-bold tracking-[0.2em] text-ink uppercase">
+                Interview preparation
+              </span>
+              <h1 className="mt-5 text-5xl leading-[1.02] sm:text-6xl">
+                Sit the interview <span className="text-ink">before</span> the interview.
+              </h1>
+              <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+                Panelly runs realistic AI mock interviews for any role or exam, follows up on your
+                answers, and tells you exactly where you lost marks.
+              </p>
+              <div className="mt-9 flex flex-wrap gap-4">
+                <Button asChild size="lg" className="rounded-xl px-8 py-6 font-semibold">
+                  <Link to="/auth">Start a mock interview</Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="rounded-xl border-2 px-8 py-6 font-semibold"
+                >
+                  <Link to="/auth">Browse the question bank</Link>
+                </Button>
+              </div>
             </div>
-          ))}
-        </section>
-      </main>
+
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-20 -bottom-24 size-80 rounded-full bg-accent/15 blur-3xl"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-12 right-12 hidden size-64 rotate-12 items-center justify-center rounded-2xl border border-ink/20 p-8 lg:flex"
+            >
+              <div className="flex size-full flex-col justify-end rounded-xl border border-ink/20 p-4">
+                <div className="mb-2 h-1 w-1/2 bg-ink/20" />
+                <div className="h-1 w-full bg-ink/20" />
+              </div>
+            </div>
+          </section>
+
+          <section className="mt-6 grid gap-6 md:grid-cols-3">
+            {features.map((feature, index) => (
+              <div
+                key={feature.title}
+                className={
+                  index === 0
+                    ? "flex flex-col justify-between rounded-[2rem] bg-ink p-8 text-ink-foreground"
+                    : index === 2
+                      ? "flex flex-col justify-between rounded-[2rem] bg-accent p-8 text-accent-foreground"
+                      : "flex flex-col justify-between rounded-[2rem] border border-border bg-card p-8 shadow-paper"
+                }
+              >
+                <span className="flex size-12 items-center justify-center rounded-full border border-current/20">
+                  <feature.icon className="size-5" />
+                </span>
+                <div className="mt-10">
+                  <h2 className="text-2xl">{feature.title}</h2>
+                  <p className="mt-2 text-sm opacity-80">{feature.body}</p>
+                </div>
+              </div>
+            ))}
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
+

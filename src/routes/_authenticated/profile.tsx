@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { AppNav } from "@/components/AppNav";
+import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -86,9 +86,9 @@ function Profile() {
   const attempts = attemptsQuery.data ?? [];
 
   return (
-    <div className="min-h-screen">
-      <AppNav />
-      <main className="mx-auto grid w-full max-w-5xl gap-8 px-4 py-10 lg:grid-cols-[1fr_320px]">
+    <AppShell title="Your profile" subtitle="The panel uses this to tailor every question.">
+      <div className="grid w-full gap-8 lg:grid-cols-[1fr_320px]">
+
         <Card className="shadow-paper">
           <CardHeader>
             <CardTitle className="text-2xl">Your profile</CardTitle>
@@ -185,7 +185,8 @@ function Profile() {
             ))}
           </CardContent>
         </Card>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
+
 }

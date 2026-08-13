@@ -6,7 +6,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
-import { AppNav } from "@/components/AppNav";
+import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -61,35 +61,29 @@ function InterviewRoom() {
 
   if (sessionQuery.isLoading) {
     return (
-      <div className="min-h-screen">
-        <AppNav />
-        <div className="mx-auto max-w-3xl space-y-4 px-4 py-10">
+      <AppShell title="Interview room">
+        <div className="mx-auto max-w-3xl space-y-4">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-72 w-full" />
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   if (sessionQuery.isError || !sessionQuery.data) {
     return (
-      <div className="min-h-screen">
-        <AppNav />
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-3xl">Interview not found</h1>
-          <Button className="mt-6" onClick={() => navigate({ to: "/dashboard" })}>
-            Back to dashboard
-          </Button>
+      <AppShell title="Interview not found">
+        <div className="mx-auto max-w-3xl text-center">
+          <Button onClick={() => navigate({ to: "/dashboard" })}>Back to dashboard</Button>
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   const { session, messages } = sessionQuery.data;
 
   return (
-    <div className="min-h-screen">
-      <AppNav />
+    <AppShell title={session.role} subtitle="Answer as you would in the room. The panel follows up.">
       <Room
         key={sessionId}
         sessionId={sessionId}
@@ -102,9 +96,10 @@ function InterviewRoom() {
           return result;
         }}
       />
-    </div>
+    </AppShell>
   );
 }
+
 
 type SessionRow = {
   role: string;
@@ -174,14 +169,14 @@ function Room({
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col px-4 py-8">
+    <div className="mx-auto flex w-full max-w-3xl flex-col">
       <div className="flex flex-wrap items-center gap-2">
-        <h1 className="mr-2 text-3xl">{session.role}</h1>
         <Badge variant="secondary">{labelFor(SECTORS, session.sector)}</Badge>
         <Badge variant="outline">{labelFor(INTERVIEW_TYPES, session.interview_type)}</Badge>
       </div>
 
       <div className="mt-6 space-y-4">
+
         {messages.length === 0 && (
           <Card className="border-dashed">
             <CardContent className="py-10 text-center text-muted-foreground">
@@ -273,6 +268,6 @@ function Room({
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
