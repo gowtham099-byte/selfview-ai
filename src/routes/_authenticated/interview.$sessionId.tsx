@@ -169,14 +169,14 @@ function Room({
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col px-4 py-8">
+    <div className="mx-auto flex w-full max-w-3xl flex-col">
       <div className="flex flex-wrap items-center gap-2">
-        <h1 className="mr-2 text-3xl">{session.role}</h1>
         <Badge variant="secondary">{labelFor(SECTORS, session.sector)}</Badge>
         <Badge variant="outline">{labelFor(INTERVIEW_TYPES, session.interview_type)}</Badge>
       </div>
 
       <div className="mt-6 space-y-4">
+
         {messages.length === 0 && (
           <Card className="border-dashed">
             <CardContent className="py-10 text-center text-muted-foreground">
