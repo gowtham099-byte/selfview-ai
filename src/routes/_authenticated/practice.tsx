@@ -66,15 +66,13 @@ function Practice() {
   const questions = questionsQuery.data ?? [];
 
   return (
-    <div className="min-h-screen">
-      <AppNav />
-      <main className="mx-auto w-full max-w-4xl px-4 py-10">
-        <h1 className="text-4xl">Question bank</h1>
-        <p className="mt-2 max-w-xl text-muted-foreground">
-          Answer in your own words and get scored on structure, substance and delivery.
-        </p>
+    <AppShell
+      title="Question bank"
+      subtitle="Answer in your own words and get scored on structure, substance and delivery."
+    >
+      <div className="mx-auto w-full max-w-4xl">
+        <div className="flex flex-wrap gap-3">
 
-        <div className="mt-6 flex flex-wrap gap-3">
           <Select value={sector} onValueChange={setSector}>
             <SelectTrigger className="w-56">
               <SelectValue />
