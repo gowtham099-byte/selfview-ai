@@ -162,8 +162,8 @@
 
 @utility paper-grid {
   background-image:
-    linear-gradient(to right, oklch(0.42 0.078 176 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.42 0.078 176 / 0.05) 1px, transparent 1px);
+    linear-gradient(to right, oklch(0.365 0.079 163 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.365 0.079 163 / 0.06) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
@@ -206,8 +206,8 @@
   backdrop-filter: blur(14px) saturate(1.1);
   box-shadow:
     inset 0 1px 0 color-mix(in oklab, white 45%, transparent),
-    0 1px 2px oklch(0.3 0.03 160 / 0.08),
-    0 14px 34px oklch(0.3 0.03 160 / 0.12);
+    0 1px 2px oklch(0.36 0.08 163 / 0.08),
+    0 14px 34px oklch(0.36 0.08 163 / 0.12);
   transform-style: preserve-3d;
   transition:
     transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -218,13 +218,13 @@
     transform: perspective(900px) translateY(-4px) rotateX(2.2deg) rotateY(-2.2deg);
     box-shadow:
       inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
-      0 6px 14px oklch(0.3 0.03 160 / 0.1),
-      0 28px 60px oklch(0.3 0.03 160 / 0.18);
+      0 6px 14px oklch(0.36 0.08 163 / 0.1),
+      0 28px 60px oklch(0.36 0.08 163 / 0.18);
   }
 }
 
 @utility glass-3d {
   background-color: color-mix(in oklab, var(--color-background) 72%, transparent);
   backdrop-filter: blur(16px) saturate(1.15);
-  box-shadow: 0 10px 30px oklch(0.3 0.03 160 / 0.1);
+  box-shadow: 0 10px 30px oklch(0.36 0.08 163 / 0.1);
 }
