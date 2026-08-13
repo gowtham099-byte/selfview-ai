@@ -185,7 +185,8 @@ function Profile() {
             ))}
           </CardContent>
         </Card>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
+
 }
