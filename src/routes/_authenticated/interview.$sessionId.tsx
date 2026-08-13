@@ -61,35 +61,29 @@ function InterviewRoom() {
 
   if (sessionQuery.isLoading) {
     return (
-      <div className="min-h-screen">
-        <AppNav />
-        <div className="mx-auto max-w-3xl space-y-4 px-4 py-10">
+      <AppShell title="Interview room">
+        <div className="mx-auto max-w-3xl space-y-4">
           <Skeleton className="h-10 w-64" />
           <Skeleton className="h-72 w-full" />
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   if (sessionQuery.isError || !sessionQuery.data) {
     return (
-      <div className="min-h-screen">
-        <AppNav />
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-3xl">Interview not found</h1>
-          <Button className="mt-6" onClick={() => navigate({ to: "/dashboard" })}>
-            Back to dashboard
-          </Button>
+      <AppShell title="Interview not found">
+        <div className="mx-auto max-w-3xl text-center">
+          <Button onClick={() => navigate({ to: "/dashboard" })}>Back to dashboard</Button>
         </div>
-      </div>
+      </AppShell>
     );
   }
 
   const { session, messages } = sessionQuery.data;
 
   return (
-    <div className="min-h-screen">
-      <AppNav />
+    <AppShell title={session.role} subtitle="Answer as you would in the room. The panel follows up.">
       <Room
         key={sessionId}
         sessionId={sessionId}
@@ -102,9 +96,10 @@ function InterviewRoom() {
           return result;
         }}
       />
-    </div>
+    </AppShell>
   );
 }
+
 
 type SessionRow = {
   role: string;
