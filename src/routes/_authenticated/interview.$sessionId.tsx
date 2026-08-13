@@ -268,6 +268,6 @@ function Room({
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
