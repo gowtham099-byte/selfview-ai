@@ -190,7 +190,8 @@ function Practice() {
             );
           })}
         </div>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   );
+
 }
