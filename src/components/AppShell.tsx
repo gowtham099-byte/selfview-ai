@@ -4,7 +4,8 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getProfile } from "@/lib/interview.functions";
-import { LayoutDashboard, ListChecks, UserRound, LogOut } from "lucide-react";
+import { LayoutDashboard, ListChecks, UserRound, LogOut, Sparkles, Activity } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -44,16 +45,18 @@ export function AppShell({
   }
 
   return (
-    <div className="min-h-screen p-0 lg:p-6">
-      <div className="flex min-h-screen overflow-hidden border-border bg-card lg:min-h-[calc(100vh-3rem)] lg:rounded-3xl lg:border lg:shadow-lift">
-        <aside className="hidden w-72 shrink-0 flex-col bg-sidebar p-8 text-sidebar-foreground lg:flex">
-          <Link to="/dashboard" className="mb-12 block">
-            <span className="font-display text-2xl font-bold tracking-tight text-sidebar-primary uppercase">
-              Panelly
+    <div className="min-h-screen p-0 lg:p-5">
+      <div className="glass-3d flex min-h-screen overflow-hidden border-border lg:min-h-[calc(100vh-2.5rem)] lg:rounded-xl lg:border">
+        <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-6 text-sidebar-foreground lg:flex">
+          <Link to="/dashboard" className="mb-12 flex items-center gap-3">
+            <span className="flex size-9 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground shadow-brass">
+              <Sparkles className="size-4" />
             </span>
+            <span className="font-display text-xl font-bold">Panelly</span>
           </Link>
 
-          <nav className="flex-1 space-y-6">
+          <p className="command-label mb-3">Workspace</p>
+          <nav className="flex-1 space-y-1">
             {links.map((link) => {
               const active = pathname.startsWith(link.to);
               return (
@@ -61,27 +64,27 @@ export function AppShell({
                   key={link.to}
                   to={link.to}
                   className={cn(
-                    "flex items-center gap-4 pb-2 font-display text-lg font-medium transition-colors",
+                    "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all",
                     active
-                      ? "border-b-2 border-sidebar-primary text-sidebar-foreground"
-                      : "text-sidebar-foreground/60 hover:text-sidebar-foreground",
+                      ? "bg-sidebar-accent text-sidebar-foreground shadow-paper"
+                      : "text-sidebar-foreground/55 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
                   )}
                 >
-                  <span
-                    className={cn(
-                      "size-2 shrink-0 rounded-full",
-                      active
-                        ? "bg-sidebar-primary"
-                        : "border border-sidebar-foreground/30 bg-transparent",
-                    )}
-                  />
+                  <link.icon className={cn("size-4", active && "text-sidebar-primary")} />
                   {link.label}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-auto space-y-4 border-t border-sidebar-border pt-8">
+          <div className="mb-5 rounded-md border border-sidebar-primary/25 bg-sidebar-primary/10 p-4">
+            <div className="mb-2 flex items-center gap-2 text-sidebar-primary">
+              <Activity className="size-4" />
+              <span className="command-label text-sidebar-primary">AI coach online</span>
+            </div>
+            <p className="text-xs leading-relaxed text-sidebar-foreground/55">Adaptive questions and feedback are ready for your next round.</p>
+          </div>
+          <div className="mt-auto space-y-4 border-t border-sidebar-border pt-6">
             <div className="flex items-center gap-4">
               <div className="flex size-10 items-center justify-center rounded-full border border-sidebar-primary/30 bg-sidebar-accent text-sm font-bold">
                 {initialsOf(profileQuery.data?.full_name)}
@@ -95,19 +98,21 @@ export function AppShell({
                 </p>
               </div>
             </div>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleSignOut}
-              className="flex items-center gap-2 text-sm text-sidebar-foreground/60 transition-colors hover:text-sidebar-foreground"
+              className="justify-start px-0 text-sidebar-foreground/60 hover:bg-transparent hover:text-sidebar-foreground"
             >
               <LogOut className="size-4" />
               Sign out
-            </button>
+            </Button>
           </div>
         </aside>
 
         {/* Mobile top bar */}
-        <div className="fixed inset-x-0 top-0 z-30 flex items-center gap-4 bg-sidebar px-4 py-3 text-sidebar-foreground lg:hidden">
-          <Link to="/dashboard" className="font-display font-bold text-sidebar-primary uppercase">
+        <div className="glass-3d fixed inset-x-0 top-0 z-30 flex items-center gap-4 border-b border-sidebar-border px-4 py-3 text-sidebar-foreground lg:hidden">
+          <Link to="/dashboard" className="font-display font-bold text-sidebar-primary">
             Panelly
           </Link>
           <nav className="ml-auto flex items-center gap-3">
@@ -126,16 +131,17 @@ export function AppShell({
                 <link.icon className="size-4" />
               </Link>
             ))}
-            <button onClick={handleSignOut} aria-label="Sign out" className="p-2 opacity-60">
+            <Button onClick={handleSignOut} aria-label="Sign out" variant="ghost" size="icon" className="opacity-60">
               <LogOut className="size-4" />
-            </button>
+            </Button>
           </nav>
         </div>
 
-        <main className="min-w-0 flex-1 overflow-y-auto bg-background pt-16 lg:pt-0">
-          <header className="flex flex-wrap items-end justify-between gap-4 px-6 py-8 lg:px-10">
+        <main className="min-w-0 flex-1 overflow-y-auto bg-background/75 pt-16 lg:pt-0">
+          <header className="flex flex-wrap items-end justify-between gap-4 border-b border-border px-6 py-7 lg:px-10">
             <div>
-              <h1 className="font-display text-3xl font-bold tracking-tight lg:text-4xl">{title}</h1>
+              <p className="command-label mb-2">Interview intelligence / workspace</p>
+              <h1 className="font-display text-3xl font-bold lg:text-4xl">{title}</h1>
               {subtitle && <p className="mt-2 max-w-xl text-muted-foreground">{subtitle}</p>}
             </div>
             {action}

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { GraduationCap } from "lucide-react";
+import { AudioLines, CheckCircle2, Sparkles } from "lucide-react";
 import { z } from "zod";
 
 export const Route = createFileRoute("/auth")({
@@ -108,18 +108,34 @@ function AuthPage() {
   }
 
   return (
-    <main className="paper-grid flex min-h-screen items-center justify-center px-4 py-16">
+    <main className="paper-grid grid min-h-screen lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="hidden flex-col justify-between border-r border-border p-12 lg:flex">
+        <Link to="/" className="flex items-center gap-3">
+          <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-brass"><Sparkles className="size-4" /></span>
+          <span className="font-display text-xl font-bold">Panelly</span>
+        </Link>
+        <div className="max-w-xl">
+          <p className="command-label text-primary">Your private interview room</p>
+          <h1 className="mt-6 text-5xl leading-tight">Prepare for the question behind the question.</h1>
+          <div className="mt-10 space-y-4">
+            {["Adaptive follow-up questions", "Structured scoring after every round", "Progress stored across sessions"].map((item) => <p key={item} className="flex items-center gap-3 text-sm text-muted-foreground"><CheckCircle2 className="size-4 text-primary" />{item}</p>)}
+          </div>
+        </div>
+        <div className="flex items-center gap-3 border-t border-border pt-6 text-sm text-muted-foreground"><AudioLines className="size-5 text-primary" /> AI panel ready</div>
+      </section>
+      <section className="flex items-center justify-center px-4 py-16 sm:px-10">
       <div className="w-full max-w-md">
-        <Link to="/" className="mb-8 flex items-center justify-center gap-2">
+        <Link to="/" className="mb-8 flex items-center justify-center gap-2 lg:hidden">
           <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <GraduationCap className="size-5" />
+            <Sparkles className="size-5" />
           </span>
           <span className="font-display text-2xl">Panelly</span>
         </Link>
 
-        <Card className="shadow-paper">
+        <Card className="shadow-lift">
           <CardHeader>
-            <CardTitle className="text-2xl">Take a seat</CardTitle>
+            <p className="command-label mb-2">Secure workspace access</p>
+            <CardTitle className="text-3xl">Take a seat</CardTitle>
             <CardDescription>
               {sent
                 ? "Check your inbox and confirm your email to finish signing up."
@@ -209,6 +225,7 @@ function AuthPage() {
           </CardContent>
         </Card>
       </div>
+      </section>
     </main>
   );
 }
