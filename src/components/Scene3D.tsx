@@ -3,8 +3,8 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
 // Design-token colours resolved to sRGB hex (oklch is not parseable by three).
-const PRIMARY = "#0d7a5f";
-const ACCENT = "#c9a84c";
+const PRIMARY = "#4a4a4a";
+const ACCENT = "#e85d3a";
 
 type ShapeDef = {
   position: [number, number, number];

@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, MessagesSquare, ListChecks, LineChart } from "lucide-react";
+import { ArrowRight, AudioLines, ListChecks, LineChart, Sparkles, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,86 +54,76 @@ function Landing() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen p-0 lg:p-6">
-      <div className="paper-grid min-h-screen overflow-hidden border-border bg-background lg:min-h-[calc(100vh-3rem)] lg:rounded-3xl lg:border lg:shadow-lift">
-        <header className="mx-auto flex h-20 w-full max-w-6xl items-center px-6">
+    <div className="min-h-screen p-0 lg:p-5">
+      <div className="paper-grid min-h-screen overflow-hidden border-border bg-background/85 lg:min-h-[calc(100vh-2.5rem)] lg:rounded-xl lg:border lg:shadow-lift">
+        <header className="mx-auto flex h-20 w-full max-w-7xl items-center border-b border-border px-6 lg:px-10">
           <Link to="/" className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-accent text-accent-foreground shadow-brass">
-              <GraduationCap className="size-5" />
+            <span className="flex size-9 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-brass">
+              <Sparkles className="size-4" />
             </span>
-            <span className="font-display text-2xl font-bold tracking-tight uppercase">
-              Panelly
-            </span>
+            <span className="font-display text-xl font-bold">Panelly</span>
           </Link>
-          <Button asChild variant="ghost" size="sm" className="ml-auto">
+          <span className="command-label ml-8 hidden md:block">AI interview command</span>
+          <Button asChild variant="outline" size="sm" className="ml-auto">
             <Link to="/auth">Sign in</Link>
           </Button>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl px-6 pb-16">
-          <section className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 sm:p-14">
-            <div className="relative z-10 max-w-2xl">
-              <span className="font-display text-xs font-bold tracking-[0.2em] text-ink uppercase">
-                Interview preparation
-              </span>
-              <h1 className="mt-5 text-5xl leading-[1.02] sm:text-6xl">
-                Sit the interview <span className="text-ink">before</span> the interview.
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-                Panelly runs realistic AI mock interviews for any role or exam, follows up on your
-                answers, and tells you exactly where you lost marks.
-              </p>
-              <div className="mt-9 flex flex-wrap gap-4">
-                <Button asChild size="lg" className="rounded-xl px-8 py-6 font-semibold">
-                  <Link to="/auth">Start a mock interview</Link>
+        <main className="mx-auto w-full max-w-7xl px-6 pb-16 lg:px-10">
+          <section className="grid min-h-[68vh] border-x border-b border-border lg:grid-cols-[1.35fr_0.65fr]">
+            <div className="flex flex-col justify-between p-7 sm:p-12 lg:p-16">
+              <div>
+                <span className="command-label text-primary">Adaptive interview intelligence</span>
+                <h1 className="mt-6 max-w-4xl text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
+                  Enter every interview with a stronger answer.
+                </h1>
+                <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+                  Panelly runs rigorous AI interview simulations, follows your reasoning in real time, and turns every response into a practical improvement plan.
+                </p>
+              </div>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="h-12 px-7">
+                  <Link to="/auth">Start simulation <ArrowRight className="size-4" /></Link>
                 </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="rounded-xl border-2 px-8 py-6 font-semibold"
-                >
-                  <Link to="/auth">Browse the question bank</Link>
+                <Button asChild size="lg" variant="outline" className="h-12 px-7">
+                  <Link to="/auth">Explore question bank</Link>
                 </Button>
               </div>
             </div>
 
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-20 -bottom-24 size-80 rounded-full bg-accent/15 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute top-12 right-12 hidden size-64 rotate-12 items-center justify-center rounded-2xl border border-ink/20 p-8 lg:flex"
-            >
-              <div className="flex size-full flex-col justify-end rounded-xl border border-ink/20 p-4">
-                <div className="mb-2 h-1 w-1/2 bg-ink/20" />
-                <div className="h-1 w-full bg-ink/20" />
+            <div className="relative flex min-h-[430px] flex-col border-t border-border bg-card/55 p-6 backdrop-blur-xl lg:border-t-0 lg:border-l">
+              <div className="flex items-center justify-between border-b border-border pb-4">
+                <span className="command-label">Simulation monitor</span>
+                <span className="flex items-center gap-2 text-xs text-primary"><span className="size-2 animate-pulse rounded-full bg-primary" /> Live</span>
+              </div>
+              <div className="flex flex-1 items-center justify-center py-10">
+                <div className="relative flex size-44 items-center justify-center rounded-full border border-primary/20 bg-primary/5">
+                  <div className="absolute inset-5 animate-pulse rounded-full border border-primary/30" />
+                  <div className="flex size-24 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-brass"><AudioLines className="size-9" /></div>
+                </div>
+              </div>
+              <blockquote className="border-l-2 border-primary pl-5 font-display text-xl leading-relaxed">
+                “Tell me about a decision you made with incomplete information.”
+              </blockquote>
+              <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-md border border-border bg-border">
+                {[['Clarity','82'],['Structure','76'],['Pace','Optimal']].map(([label,value]) => <div key={label} className="bg-background/90 p-3"><p className="command-label">{label}</p><p className="mt-1 text-sm font-semibold">{value}</p></div>)}
               </div>
             </div>
           </section>
 
-          <section className="mt-6 grid gap-6 md:grid-cols-3">
+          <section className="grid border-x border-b border-border md:grid-cols-3">
             {features.map((feature, index) => (
-              <div
-                key={feature.title}
-                className={
-                  index === 0
-                    ? "flex flex-col justify-between rounded-[2rem] bg-ink p-8 text-ink-foreground"
-                    : index === 2
-                      ? "flex flex-col justify-between rounded-[2rem] bg-accent p-8 text-accent-foreground"
-                      : "flex flex-col justify-between rounded-[2rem] border border-border bg-card p-8 shadow-paper"
-                }
-              >
-                <span className="flex size-12 items-center justify-center rounded-full border border-current/20">
-                  <feature.icon className="size-5" />
-                </span>
-                <div className="mt-10">
-                  <h2 className="text-2xl">{feature.title}</h2>
-                  <p className="mt-2 text-sm opacity-80">{feature.body}</p>
-                </div>
+              <div key={feature.title} className="border-b border-border p-7 last:border-b-0 md:border-r md:border-b-0 md:last:border-r-0 lg:p-9">
+                <div className="mb-10 flex items-center justify-between"><span className="command-label">0{index + 1} / capability</span><feature.icon className="size-5 text-primary" /></div>
+                <h2 className="text-2xl">{feature.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{feature.body}</p>
               </div>
             ))}
+          </section>
+
+          <section className="mt-6 flex flex-col justify-between gap-6 border border-border bg-card/50 p-7 backdrop-blur-md md:flex-row md:items-center lg:p-10">
+            <div className="flex items-start gap-4"><ShieldCheck className="mt-1 size-5 text-primary" /><div><p className="command-label">Private practice environment</p><h2 className="mt-2 text-2xl">Train, review, repeat—without the pressure.</h2></div></div>
+            <Button asChild variant="outline"><Link to="/auth">Open your workspace <ArrowRight /></Link></Button>
           </section>
         </main>
       </div>
