@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, AudioLines, ListChecks, LineChart, Sparkles, ShieldCheck } from "lucide-react";
+import { ArrowRight, AudioLines, ListChecks, LineChart, MessagesSquare, Sparkles, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
