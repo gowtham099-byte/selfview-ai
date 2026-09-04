@@ -138,6 +138,7 @@ export type Database = {
           id: string
           ideal_answer: string | null
           prompt: string
+          role: string | null
           sector: string
           tip: string | null
         }
@@ -148,6 +149,7 @@ export type Database = {
           id?: string
           ideal_answer?: string | null
           prompt: string
+          role?: string | null
           sector: string
           tip?: string | null
         }
@@ -158,6 +160,7 @@ export type Database = {
           id?: string
           ideal_answer?: string | null
           prompt?: string
+          role?: string | null
           sector?: string
           tip?: string | null
         }
