@@ -1,11 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
-import {
-  buildEvaluationPrompt,
-  buildScoringPrompt,
-  runGatewayJson,
-} from "./interview-ai.server";
+import { buildEvaluationPrompt, buildScoringPrompt, runGatewayJson } from "./interview-ai.server";
 
 const CreateSessionSchema = z.object({
   role: z.string().trim().min(1).max(80),
@@ -16,7 +12,7 @@ const CreateSessionSchema = z.object({
 
 export const createSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => CreateSessionSchema.parse(input))
+  .validator((input: unknown) => CreateSessionSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { data: row, error } = await context.supabase
       .from("interview_sessions")
@@ -39,7 +35,9 @@ export const listSessions = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data, error } = await context.supabase
       .from("interview_sessions")
-      .select("id, title, role, sector, interview_type, difficulty, status, overall_score, updated_at")
+      .select(
+        "id, title, role, sector, interview_type, difficulty, status, overall_score, updated_at",
+      )
       .order("updated_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
@@ -48,7 +46,7 @@ export const listSessions = createServerFn({ method: "GET" })
 
 export const getSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .validator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { data: session, error } = await context.supabase
       .from("interview_sessions")
@@ -70,19 +68,16 @@ export const getSession = createServerFn({ method: "POST" })
 
 export const deleteSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .validator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
-    const { error } = await context.supabase
-      .from("interview_sessions")
-      .delete()
-      .eq("id", data.id);
+    const { error } = await context.supabase.from("interview_sessions").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
 
 export const finishSession = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
+  .validator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { data: session } = await context.supabase
       .from("interview_sessions")
@@ -101,7 +96,8 @@ export const finishSession = createServerFn({ method: "POST" })
       .map((m) => `${m.role === "user" ? "CANDIDATE" : "INTERVIEWER"}: ${m.content}`)
       .join("\n\n");
 
-    if (!transcript.trim()) throw new Error("Answer at least one question before ending the interview.");
+    if (!transcript.trim())
+      throw new Error("Answer at least one question before ending the interview.");
 
     const result = await runGatewayJson(buildEvaluationPrompt(session, transcript));
     const score = Math.max(0, Math.min(100, Math.round(Number(result["score"]) || 0)));
@@ -138,7 +134,7 @@ export const getProfile = createServerFn({ method: "GET" })
 
 export const saveProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => ProfileSchema.parse(input))
+  .validator((input: unknown) => ProfileSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("profiles")
@@ -154,7 +150,7 @@ const AttemptSchema = z.object({
 
 export const scoreAnswer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => AttemptSchema.parse(input))
+  .validator((input: unknown) => AttemptSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { data: question, error: questionError } = await context.supabase
       .from("questions")

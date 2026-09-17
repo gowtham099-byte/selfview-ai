@@ -72,7 +72,6 @@ function Practice() {
     >
       <div className="mx-auto w-full max-w-4xl">
         <div className="flex flex-wrap gap-3">
-
           <Select value={sector} onValueChange={setSector}>
             <SelectTrigger className="w-56">
               <SelectValue />
@@ -193,5 +192,4 @@ function Practice() {
       </div>
     </AppShell>
   );
-
 }

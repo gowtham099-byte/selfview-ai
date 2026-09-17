@@ -15,6 +15,16 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local workspace / tooling artifacts
+.claude/
+.Gowtham/
 
 # Wrangler / Cloudflare
 .wrangler/

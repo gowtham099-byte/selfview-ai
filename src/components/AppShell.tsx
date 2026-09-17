@@ -4,8 +4,9 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getProfile } from "@/lib/interview.functions";
-import { LayoutDashboard, ListChecks, UserRound, LogOut, Sparkles, Activity } from "lucide-react";
+import { LayoutDashboard, ListChecks, UserRound, LogOut, Activity, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandMark } from "@/components/BrandMark";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -48,11 +49,8 @@ export function AppShell({
     <div className="min-h-screen p-0 lg:p-5">
       <div className="glass-3d flex min-h-screen overflow-hidden border-border lg:min-h-[calc(100vh-2.5rem)] lg:rounded-xl lg:border">
         <aside className="hidden w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar p-6 text-sidebar-foreground lg:flex">
-          <Link to="/dashboard" className="mb-12 flex items-center gap-3">
-            <span className="flex size-9 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground shadow-brass">
-              <Sparkles className="size-4" />
-            </span>
-            <span className="font-display text-xl font-bold">Panelly</span>
+          <Link to="/dashboard" className="mb-12">
+            <BrandMark />
           </Link>
 
           <p className="command-label mb-3">Workspace</p>
@@ -75,6 +73,22 @@ export function AppShell({
                 </Link>
               );
             })}
+            {profileQuery.data?.is_admin && (
+              <Link
+                to="/admin"
+                className={cn(
+                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-all",
+                  pathname.startsWith("/admin")
+                    ? "bg-sidebar-accent text-sidebar-foreground shadow-paper"
+                    : "text-sidebar-foreground/55 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
+                )}
+              >
+                <Shield
+                  className={cn("size-4", pathname.startsWith("/admin") && "text-sidebar-primary")}
+                />
+                Admin
+              </Link>
+            )}
           </nav>
 
           <div className="mb-5 rounded-md border border-sidebar-primary/25 bg-sidebar-primary/10 p-4">
@@ -82,7 +96,9 @@ export function AppShell({
               <Activity className="size-4" />
               <span className="command-label text-sidebar-primary">AI coach online</span>
             </div>
-            <p className="text-xs leading-relaxed text-sidebar-foreground/55">Adaptive questions and feedback are ready for your next round.</p>
+            <p className="text-xs leading-relaxed text-sidebar-foreground/55">
+              Adaptive questions and feedback are ready for your next round.
+            </p>
           </div>
           <div className="mt-auto space-y-4 border-t border-sidebar-border pt-6">
             <div className="flex items-center gap-4">
@@ -112,8 +128,8 @@ export function AppShell({
 
         {/* Mobile top bar */}
         <div className="glass-3d fixed inset-x-0 top-0 z-30 flex items-center gap-4 border-b border-sidebar-border px-4 py-3 text-sidebar-foreground lg:hidden">
-          <Link to="/dashboard" className="font-display font-bold text-sidebar-primary">
-            Panelly
+          <Link to="/dashboard" aria-label="Panelly dashboard">
+            <BrandMark iconClassName="size-3.5" className="gap-2 text-sm" />
           </Link>
           <nav className="ml-auto flex items-center gap-3">
             {links.map((link) => (
@@ -131,7 +147,13 @@ export function AppShell({
                 <link.icon className="size-4" />
               </Link>
             ))}
-            <Button onClick={handleSignOut} aria-label="Sign out" variant="ghost" size="icon" className="opacity-60">
+            <Button
+              onClick={handleSignOut}
+              aria-label="Sign out"
+              variant="ghost"
+              size="icon"
+              className="opacity-60"
+            >
               <LogOut className="size-4" />
             </Button>
           </nav>

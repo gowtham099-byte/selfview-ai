@@ -88,7 +88,6 @@ function Profile() {
   return (
     <AppShell title="Your profile" subtitle="The panel uses this to tailor every question.">
       <div className="grid w-full gap-8 lg:grid-cols-[1fr_320px]">
-
         <Card className="shadow-paper">
           <CardHeader>
             <CardTitle className="text-2xl">Your profile</CardTitle>
@@ -188,5 +187,4 @@ function Profile() {
       </div>
     </AppShell>
   );
-
 }

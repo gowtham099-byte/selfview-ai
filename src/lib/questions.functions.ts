@@ -10,7 +10,7 @@ const FilterSchema = z.object({
 });
 
 export const listQuestions = createServerFn({ method: "GET" })
-  .inputValidator((input: unknown) => FilterSchema.parse(input ?? {}))
+  .validator((input: unknown) => FilterSchema.parse(input ?? {}))
   .handler(async ({ data }) => {
     const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
     const supabase = createClient<Database>(process.env["SUPABASE_URL"]!, key, {
@@ -35,7 +35,8 @@ export const listQuestions = createServerFn({ method: "GET" })
 
     if (data.sector && data.sector !== "all") query = query.eq("sector", data.sector);
     if (data.category && data.category !== "all") query = query.eq("category", data.category);
-    if (data.difficulty && data.difficulty !== "all") query = query.eq("difficulty", data.difficulty);
+    if (data.difficulty && data.difficulty !== "all")
+      query = query.eq("difficulty", data.difficulty);
 
     const { data: rows, error } = await query;
     if (error) throw new Error(error.message);

@@ -42,7 +42,13 @@ function Shape({ def, color }: { def: ShapeDef; color: string }) {
   }, [def.kind]);
 
   return (
-    <mesh ref={ref} position={def.position} rotation={def.rotation} scale={def.scale} geometry={geometry}>
+    <mesh
+      ref={ref}
+      position={def.position}
+      rotation={def.rotation}
+      scale={def.scale}
+      geometry={geometry}
+    >
       <meshStandardMaterial
         color={color}
         roughness={0.45}
@@ -67,7 +73,6 @@ function Rig() {
 }
 
 export default function Scene3D() {
-
   const shapes = useMemo<ShapeDef[]>(() => {
     const list: ShapeDef[] = [];
     for (let i = 0; i < 9; i++) {

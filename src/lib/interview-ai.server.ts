@@ -18,7 +18,11 @@ type QuestionMeta = {
 
 export function buildInterviewSystemPrompt(
   session: SessionMeta,
-  profile: { full_name: string | null; experience_level: string | null; goal: string | null } | null,
+  profile: {
+    full_name: string | null;
+    experience_level: string | null;
+    goal: string | null;
+  } | null,
 ) {
   return [
     "You are an experienced interview panellist running a realistic mock interview.",

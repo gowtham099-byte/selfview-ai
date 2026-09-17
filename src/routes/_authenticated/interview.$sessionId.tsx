@@ -83,7 +83,10 @@ function InterviewRoom() {
   const { session, messages } = sessionQuery.data;
 
   return (
-    <AppShell title={session.role} subtitle="Answer as you would in the room. The panel follows up.">
+    <AppShell
+      title={session.role}
+      subtitle="Answer as you would in the room. The panel follows up."
+    >
       <Room
         key={sessionId}
         sessionId={sessionId}
@@ -99,7 +102,6 @@ function InterviewRoom() {
     </AppShell>
   );
 }
-
 
 type SessionRow = {
   role: string;
@@ -176,7 +178,6 @@ function Room({
       </div>
 
       <div className="mt-6 space-y-4">
-
         {messages.length === 0 && (
           <Card className="border-dashed">
             <CardContent className="py-10 text-center text-muted-foreground">
