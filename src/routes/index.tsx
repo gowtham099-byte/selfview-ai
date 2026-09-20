@@ -85,7 +85,8 @@ function Landing() {
     });
   }, [navigate]);
 
-  const currentPrompt = scenarios[selectedScenario][promptIndex % scenarios[selectedScenario].length];
+  const currentPrompt =
+    scenarios[selectedScenario][promptIndex % scenarios[selectedScenario].length];
 
   const scoreCards = useMemo(
     () => [
@@ -211,7 +212,9 @@ function Landing() {
 
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Button
-                    onClick={() => setPromptIndex((index) => (index + 1) % scenarios[selectedScenario].length)}
+                    onClick={() =>
+                      setPromptIndex((index) => (index + 1) % scenarios[selectedScenario].length)
+                    }
                   >
                     Next prompt
                   </Button>
@@ -225,7 +228,9 @@ function Landing() {
                 <div className="flex items-center justify-between">
                   <p className="command-label">Live score</p>
                   <span className="flex items-center gap-2 text-xs text-primary">
-                    <span className={`size-2 rounded-full ${contextLive ? "animate-pulse bg-primary" : "bg-muted-foreground"}`} />
+                    <span
+                      className={`size-2 rounded-full ${contextLive ? "animate-pulse bg-primary" : "bg-muted-foreground"}`}
+                    />
                     {contextLive ? "Live" : "Paused"}
                   </span>
                 </div>
@@ -250,7 +255,8 @@ function Landing() {
                 <div className="mt-6 rounded-lg border border-border bg-card p-4">
                   <p className="command-label">Follow-up prompt</p>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    “Can you walk me through the trade-offs you considered and why you chose this approach?”
+                    “Can you walk me through the trade-offs you considered and why you chose this
+                    approach?”
                   </p>
                 </div>
               </div>

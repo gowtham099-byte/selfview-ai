@@ -46,6 +46,7 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -64,13 +65,18 @@ function AuthPage() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword(parsed.data);
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+    try {
+      const { error } = await supabase.auth.signInWithPassword(parsed.data);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      navigate({ to: "/dashboard", replace: true });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to sign in. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    navigate({ to: "/dashboard", replace: true });
   }
 
   async function handleSignUp(event: React.FormEvent) {
@@ -81,38 +87,98 @@ function AuthPage() {
       return;
     }
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      ...parsed.data,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: fullName.trim().slice(0, 80) },
-      },
-    });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        ...parsed.data,
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: { full_name: fullName.trim().slice(0, 80) },
+        },
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      if (data.session) {
+        navigate({ to: "/dashboard", replace: true });
+        return;
+      }
+      setSent(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to create an account.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleResendConfirmation() {
+    const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]!.message);
       return;
     }
-    if (data.session) {
-      navigate({ to: "/dashboard", replace: true });
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: parsed.data,
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.success("Confirmation email sent. Check your inbox.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to resend confirmation email.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleResetPassword() {
+    const parsed = z.string().trim().email("Enter a valid email").safeParse(email);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]!.message);
       return;
     }
-    setSent(true);
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(parsed.data, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      setResetSent(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to send a reset email.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleGoogle() {
     setGoogleLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        toast.error(result.error.message || "Google sign-in failed. Please try again.");
+        return;
+      }
+      if (result.redirected) return;
+      navigate({ to: "/dashboard", replace: true });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Google sign-in failed. Please try again.",
+      );
+    } finally {
       setGoogleLoading(false);
-      toast.error("Google sign-in failed. Please try again.");
-      return;
     }
-    if (result.redirected) return;
-    setGoogleLoading(false);
-    navigate({ to: "/dashboard", replace: true });
   }
 
   const isBusy = loading || googleLoading;
@@ -122,32 +188,32 @@ function AuthPage() {
       <section className="relative hidden overflow-hidden flex-col justify-between border-r border-border p-12 lg:flex">
         <AuthScene />
         <div className="relative z-10 flex h-full flex-col justify-between">
-        <Link to="/">
-          <BrandMark />
-        </Link>
-        <div className="max-w-xl">
-          <p className="command-label text-primary">Your private interview room</p>
-          <h1 className="mt-6 text-5xl leading-tight transition-all duration-500">
-            {mode === "signin"
-              ? "Prepare for the question behind the question."
-              : "Build the answer you want to be known for."}
-          </h1>
-          <div className="mt-10 space-y-4">
-            {[
-              "Adaptive follow-up questions",
-              "Structured scoring after every round",
-              "Progress stored across sessions",
-            ].map((item) => (
-              <p key={item} className="flex items-center gap-3 text-sm text-muted-foreground">
-                <CheckCircle2 className="size-4 text-primary" />
-                {item}
-              </p>
-            ))}
+          <Link to="/">
+            <BrandMark />
+          </Link>
+          <div className="max-w-xl">
+            <p className="command-label text-primary">Your private interview room</p>
+            <h1 className="mt-6 text-5xl leading-tight transition-all duration-500">
+              {mode === "signin"
+                ? "Prepare for the question behind the question."
+                : "Build the answer you want to be known for."}
+            </h1>
+            <div className="mt-10 space-y-4">
+              {[
+                "Adaptive follow-up questions",
+                "Structured scoring after every round",
+                "Progress stored across sessions",
+              ].map((item) => (
+                <p key={item} className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <CheckCircle2 className="size-4 text-primary" />
+                  {item}
+                </p>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-3 border-t border-border pt-6 text-sm text-muted-foreground">
-          <AudioLines className="size-5 text-primary" /> AI panel ready
-        </div>
+          <div className="flex items-center gap-3 border-t border-border pt-6 text-sm text-muted-foreground">
+            <AudioLines className="size-5 text-primary" /> AI panel ready
+          </div>
         </div>
       </section>
       <section className="flex items-center justify-center px-4 py-16 sm:px-10">
@@ -165,17 +231,34 @@ function AuthPage() {
                   ? "Check your inbox and confirm your email to finish signing up."
                   : "Your mock interviews, feedback and progress in one place."}
               </CardDescription>
+              {sent ? (
+                <Button
+                  type="button"
+                  variant="link"
+                  className="mt-3 h-auto justify-start px-0"
+                  onClick={handleResendConfirmation}
+                  disabled={isBusy}
+                >
+                  Resend confirmation email
+                </Button>
+              ) : null}
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="mb-6 w-full" onClick={handleGoogle} disabled={isBusy}>
-                {googleLoading ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+              <Button
+                variant="outline"
+                className="mb-6 w-full"
+                onClick={handleGoogle}
+                disabled={isBusy}
+              >
+                {googleLoading ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Sparkles className="size-4" />
+                )}
                 {googleLoading ? "Connecting…" : "Continue with Google"}
               </Button>
 
-                  <Tabs
-                    value={mode}
-                    onValueChange={(value) => setMode(value as "signin" | "signup")}
-                  >
+              <Tabs value={mode} onValueChange={(value) => setMode(value as "signin" | "signup")}>
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="signin">Sign in</TabsTrigger>
                   <TabsTrigger value="signup">Create account</TabsTrigger>
@@ -215,10 +298,26 @@ function AuthPage() {
                         {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </Button>
                     </div>
+                    <div className="flex items-center justify-between gap-4 text-sm">
+                      <span className="text-muted-foreground">
+                        {resetSent ? "Reset link sent. Check your inbox." : "Forgot your password?"}
+                      </span>
+                      <Button
+                        type="button"
+                        variant="link"
+                        className="h-auto shrink-0 px-0"
+                        onClick={handleResetPassword}
+                        disabled={isBusy || resetSent}
+                      >
+                        Reset it
+                      </Button>
+                    </div>
                     <Button type="submit" className="group w-full" disabled={isBusy}>
                       {loading ? <Loader2 className="size-4 animate-spin" /> : null}
                       {loading ? "Checking access…" : "Sign in"}
-                      {!loading && <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />}
+                      {!loading && (
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                      )}
                     </Button>
                   </form>
                 </TabsContent>
@@ -269,7 +368,9 @@ function AuthPage() {
                     <Button type="submit" className="group w-full" disabled={isBusy}>
                       {loading ? <Loader2 className="size-4 animate-spin" /> : null}
                       {loading ? "Creating your room…" : "Create account"}
-                      {!loading && <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />}
+                      {!loading && (
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                      )}
                     </Button>
                   </form>
                 </TabsContent>

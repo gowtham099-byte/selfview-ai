@@ -1,7 +1,13 @@
 import { BriefcaseBusiness } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function BrandMark({ className, iconClassName }: { className?: string; iconClassName?: string }) {
+export function BrandMark({
+  className,
+  iconClassName,
+}: {
+  className?: string;
+  iconClassName?: string;
+}) {
   return (
     <span className={cn("flex items-center gap-3", className)}>
       <span className="relative flex size-9 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-brass">
