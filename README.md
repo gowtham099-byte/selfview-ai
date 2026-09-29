@@ -2,9 +2,9 @@
 
 create an AI based interview preparation platform
 
-This project was built with [Lovable](https://lovable.dev).
 
-## Build with Lovable
+
+## Build with
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/ec925634-dd78-40ac-bd15-58d426b1590c).
 
