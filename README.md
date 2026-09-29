@@ -6,7 +6,7 @@ create an AI based interview preparation platform
 
 ## Build with
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/ec925634-dd78-40ac-bd15-58d426b1590c).
+Continue developing this project (https://lovable.dev/projects/ec925634-dd78-40ac-bd15-58d426b1590c).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
